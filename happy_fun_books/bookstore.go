@@ -1,6 +1,9 @@
 package bookstore
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 // Book represents information about a book.
 type Book struct {
@@ -33,6 +36,28 @@ func GetAllBooks(catalog []Book) []Book {
 // 	return Book{}
 // }
 
-func GetBook(catalog map[int]Book, ID int) Book {
-	return catalog[ID]
+// func GetBook(catalog map[int]Book, ID int) Book {
+// 	return catalog[ID]
+// }
+
+// func GetBook(catalog map[int]Book, ID int) (Book, error) {
+// 	return catalog[ID], nil
+// }
+
+// func GetBook(catalog map[int]Book, ID int) (Book, error) {
+// 	if _, ok := catalog[ID]; !ok {
+// 		return Book{}, errors.New("Book not found.")
+// 	}
+// 	return Book{}, nil
+// }
+// scrapped this function for a more informative version that returns the ID of the book
+
+func GetBook(catalog map[int]Book, ID int) (Book, error) {
+    b, ok := catalog[ID]
+    if !ok {
+        return Book{}, fmt.Errorf("Book not found: %d", ID)
+    }
+    return b, nil
 }
+
+// func AddBook()
