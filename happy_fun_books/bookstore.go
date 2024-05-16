@@ -23,9 +23,19 @@ func Buy(b Book) (Book, error) {
 	return b, nil
 }
 
-func GetAllBooks(catalog []Book) []Book {
-	return catalog
+// func GetAllBooks(catalog []Book) []Book {
+// 	return catalog
+// }
+// refactoring to use a map instead of a slice
+
+func GetAllBooks(catalog map[int]Book) []Book {
+	result := []Book{}
+	for _, b := range catalog {
+		result = append(result, b)
+	}
+	return result
 }
+
 
 // func GetBook(catalog []Book, ID int) Book {
 // 	for _, b := range catalog {

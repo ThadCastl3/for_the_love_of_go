@@ -4,6 +4,7 @@ import (
 	"bookstore"
 	"github.com/google/go-cmp/cmp"
 	"testing"
+	"sort"
 )
 
 // bookstore.Book{
@@ -58,21 +59,42 @@ func TestBuyErrorsIfNoCopiesLeft(t *testing.T) {
 // 	bookstore.Buy(bookstore.Book{Copies: 1})
 // }
 
+// func TestGetAllBooks(t *testing.T) {
+// 	t.Parallel()
+// 	catalog := []bookstore.Book{
+// 		{Title: "McMuffins and Puffins"},
+// 		{Title: "El Chupacabra y El Gato"},
+// 	}
+// 	want := []bookstore.Book{
+// 		{Title: "McMuffins and Puffins"},
+// 		{Title: "El Chupacabra y El Gato"},
+// 	}
+// 	// want := []string{"same", "same", "same"}
+// 	// got := []string{"same", "different", "same"}
+// 	got := bookstore.GetAllBooks(catalog)
+// 	if !cmp.Equal(want, got) {
+// 		t.Error(cmp.Diff(want, got))
+// 	}
+// }
+// refactoring to use a map instead of a slice
+
 func TestGetAllBooks(t *testing.T) {
 	t.Parallel()
-	catalog := []bookstore.Book{
-		{Title: "McMuffins and Puffins"},
-		{Title: "El Chupacabra y El Gato"},
+	catalog := map[int]bookstore.Book{
+		1: {ID: 1, Title: "McMuffins and Puffins"},
+		2: {ID: 2, Title: "El Chupacabra y El Gato"},
 	}
 	want := []bookstore.Book{
-		{Title: "McMuffins and Puffins"},
-		{Title: "El Chupacabra y El Gato"},
+		{ID: 1, Title: "McMuffins and Puffins"},
+		{ID: 2, Title: "El Chupacabra y El Gato"},
 	}
-	// want := []string{"same", "same", "same"}
-	// got := []string{"same", "different", "same"}
 	got := bookstore.GetAllBooks(catalog)
+	//sorting the slice to match our want
+	sort.Slice(got, func(i, j int) bool {
+		return got[i].ID < got[j].ID
+	})
 	if !cmp.Equal(want, got) {
-		t.Error(cmp.Diff(want, got))
+	t.Error(cmp.Diff(want, got))
 	}
 }
 
