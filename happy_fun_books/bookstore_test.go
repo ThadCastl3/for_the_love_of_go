@@ -78,9 +78,30 @@ func TestBuyErrorsIfNoCopiesLeft(t *testing.T) {
 // }
 // refactoring to use a map instead of a slice
 
+// func TestGetAllBooks(t *testing.T) {
+// 	t.Parallel()
+// 	catalog := map[int]bookstore.Book{
+// 		1: {ID: 1, Title: "McMuffins and Puffins"},
+// 		2: {ID: 2, Title: "El Chupacabra y El Gato"},
+// 	}
+// 	want := []bookstore.Book{
+// 		{ID: 1, Title: "McMuffins and Puffins"},
+// 		{ID: 2, Title: "El Chupacabra y El Gato"},
+// 	}
+// 	got := bookstore.GetAllBooks(catalog)
+// 	//sorting the slice to match our want
+// 	sort.Slice(got, func(i, j int) bool {
+// 		return got[i].ID < got[j].ID
+// 	})
+// 	if !cmp.Equal(want, got) {
+// 	t.Error(cmp.Diff(want, got))
+// 	}
+// }
+
+// refactoring to utilized custom defined type and method
 func TestGetAllBooks(t *testing.T) {
 	t.Parallel()
-	catalog := map[int]bookstore.Book{
+	catalog := bookstore.Catalog{
 		1: {ID: 1, Title: "McMuffins and Puffins"},
 		2: {ID: 2, Title: "El Chupacabra y El Gato"},
 	}
@@ -88,7 +109,7 @@ func TestGetAllBooks(t *testing.T) {
 		{ID: 1, Title: "McMuffins and Puffins"},
 		{ID: 2, Title: "El Chupacabra y El Gato"},
 	}
-	got := bookstore.GetAllBooks(catalog)
+	got := catalog.GetAllBooks()
 	//sorting the slice to match our want
 	sort.Slice(got, func(i, j int) bool {
 		return got[i].ID < got[j].ID
@@ -98,21 +119,38 @@ func TestGetAllBooks(t *testing.T) {
 	}
 }
 
+// func TestGetBook(t *testing.T) {
+// 	t.Parallel()
+// 	// catalog := []bookstore.Book{
+// 	// 	{ID: 1, Title: "Le Monkai"},
+// 	// 	{ID: 2, Title: "The Second Coming of The Apes"},
+// 	// }
+// 	catalog := map[int]bookstore.Book{
+// 		1: {ID: 1, Title: "Le Monkai"},
+// 		2: {ID: 2, Title: "The Second Coming of The Apes"},
+// 	}
+// 	// want := bookstore.Book{ID: 1, Title: "Le Monkai"}
+// 	want := bookstore.Book{ID: 2, Title: "The Second Coming of The Apes"}
+// 	// got := bookstore.GetBook(catalog, 1)
+// 	// got := bookstore.GetBook(catalog, 2)
+// 	got, err := bookstore.GetBook(catalog, 2)
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+// 	if !cmp.Equal(want, got) {
+// 		t.Error(cmp.Diff(want, got))
+// 	}
+// }
+
+//refactoring TestGetBook to use custom defined type and method
 func TestGetBook(t *testing.T) {
 	t.Parallel()
-	// catalog := []bookstore.Book{
-	// 	{ID: 1, Title: "Le Monkai"},
-	// 	{ID: 2, Title: "The Second Coming of The Apes"},
-	// }
-	catalog := map[int]bookstore.Book{
+	catalog := bookstore.Catalog{
 		1: {ID: 1, Title: "Le Monkai"},
 		2: {ID: 2, Title: "The Second Coming of The Apes"},
 	}
-	// want := bookstore.Book{ID: 1, Title: "Le Monkai"}
 	want := bookstore.Book{ID: 2, Title: "The Second Coming of The Apes"}
-	// got := bookstore.GetBook(catalog, 1)
-	// got := bookstore.GetBook(catalog, 2)
-	got, err := bookstore.GetBook(catalog, 2)
+	got, err := catalog.GetBook(2)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -123,9 +161,23 @@ func TestGetBook(t *testing.T) {
 
 func TestGetBookBadIDReturnsError(t *testing.T) {
 	t.Parallel()
-	catalog := map[int]bookstore.Book{}
-	_, err := bookstore.GetBook(catalog, 42069)
+	catalog := bookstore.Catalog{}
+	_, err := catalog.GetBook(42069)
 	if err == nil {
 		t.Error("Expected an error when getting a book with a bad ID, got nil instead")
+	}
+}
+
+func TestNetPriceCents(t *testing.T) {
+	t.Parallel()
+	b := bookstore.Book{
+		Title:  "The Price is Right",
+		PriceCents: 4000,
+		DiscountPercent: 25,
+	}
+	want := 3000
+	got := b.NetPriceCents()
+	if want != got {
+		t.Errorf("want %d, got %d", want, got)
 	}
 }
