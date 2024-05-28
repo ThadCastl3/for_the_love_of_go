@@ -44,10 +44,10 @@ func (su StringUppercaser) ToUpper() string {
 // }
 
 //fixed the mismatch types
-func Double(input *int) {
-	*input *= 2
-}
+// func Double(input *int) {
+// 	*input *= 2
+// }
 
 func (input *MyInt) Double() {
-	*input *= 2
+	*input *= 2 // dereference the pointer and multiply by 2
 }

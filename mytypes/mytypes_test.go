@@ -114,3 +114,14 @@ func TestStringUppercaser(t *testing.T) {
 
 // modifying test to use a pointer for the MyInt type
 //
+
+func TestMyIntDouble(t *testing.T) {
+	t.Parallel()
+	var x mytypes.MyInt = 12
+	want := mytypes.MyInt(24)
+	p := &x // pointer to x
+	p.Double() // call the method on the pointer
+	if want != x {
+		t.Errorf("want %d, got %d", want, x)
+	}
+}
