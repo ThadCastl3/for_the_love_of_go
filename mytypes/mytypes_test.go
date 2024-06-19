@@ -2,8 +2,8 @@ package mytypes_test
 
 import (
 	"mytypes"
-	"testing"
 	"strings"
+	"testing"
 )
 
 func TestTwice(t *testing.T) {
@@ -119,8 +119,18 @@ func TestMyIntDouble(t *testing.T) {
 	t.Parallel()
 	var x mytypes.MyInt = 12
 	want := mytypes.MyInt(24)
-	p := &x // pointer to x
+	p := &x    // pointer to x
 	p.Double() // call the method on the pointer
+	if want != x {
+		t.Errorf("want %d, got %d", want, x)
+	}
+}
+
+func TestMyIntDouble2(t *testing.T) {
+	t.Parallel()
+	var x mytypes.MyInt = 12
+	want := mytypes.MyInt(24)
+	x.Double() // call the method on the value
 	if want != x {
 		t.Errorf("want %d, got %d", want, x)
 	}

@@ -122,7 +122,7 @@ func closeEnough(a, b, tolerance float64) bool {
 func TestSqrt(t *testing.T) {
 	t.Parallel()
 	type testCase struct {
-		a, b float64
+		a float64
 		want float64
 	}
 	testCases := []testCase{
