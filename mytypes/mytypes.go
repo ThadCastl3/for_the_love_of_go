@@ -12,6 +12,7 @@ func (i MyInt) Twice() MyInt {
 
 type MyString string
 
+// Len returns the length of the string it receives as a receiver
 func (s MyString) Len() int {
 	return len(s)
 }
@@ -22,10 +23,12 @@ func (mb MyBuilder) Hello() string {
 	return "Hello, Gophers!"
 }
 
+// MyBuilder is a struct that contains a strings.Builder
 type MyBuilder struct {
 	Contents strings.Builder
 }
 
+// StringUppercaser is a struct that contains a strings.Builder and converts the string to uppercase
 type StringUppercaser struct {
 	Contents strings.Builder
 }
