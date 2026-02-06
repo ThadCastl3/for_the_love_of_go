@@ -15,12 +15,13 @@ import (
 
 // creating a book object price in cents and a discount field
 type Book struct {
-	Title string
-	Author string
-	Copies int
-	ID int
-	PriceCents int
+	Title           string
+	Author          string
+	Copies          int
+	ID              int
+	PriceCents      int
 	DiscountPercent int
+	category        string
 }
 
 // Buy decrements the number of copies of a book by 1.
@@ -44,7 +45,6 @@ func Buy(b Book) (Book, error) {
 // 	}
 // 	return result
 // }
-
 
 // func GetBook(catalog []Book, ID int) Book {
 // 	for _, b := range catalog {
@@ -109,9 +109,42 @@ func (c Catalog) GetAllBooks() []Book {
 }
 
 func (c Catalog) GetBook(ID int) (Book, error) {
-    b, ok := c[ID]
-    if !ok {
-        return Book{}, fmt.Errorf("Book not found: %d", ID)
-    }
-    return b, nil
+	b, ok := c[ID]
+	if !ok {
+		return Book{}, fmt.Errorf("Book not found: %d", ID)
+	}
+	return b, nil
+}
+
+// method for validating book discounts (non working, since we need to modify the receiver and the receiver must be a pointer)
+// func (b Book) SetPriceCents(price int) error {
+// 	b.PriceCents = price
+// 	return nil
+// }
+
+// method for validating book discounts (working, since we modify the receiver and the receiver must be a pointer) but it does not return an error if the price is invalid
+// func (b *Book) SetPriceCents(price int) error {
+// 	b.PriceCents = price
+// 	return nil
+// }
+
+func (b *Book) SetPriceCents(price int) error {
+	if price < 0 {
+		return fmt.Errorf("negative price %d", price)
+	}
+	b.PriceCents = price
+	return nil
+}
+
+// method for retrieving the category of a book
+func (b *Book) SetCategory(category string) error {
+	if category != "Autobiography" {
+		return fmt.Errorf("unsupported category %q", category)
+	}
+	b.category = category
+	return nil
+}
+
+func (b Book) Category() string {
+	return b.category
 }
